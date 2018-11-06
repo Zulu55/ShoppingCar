@@ -53,7 +53,10 @@
             @Html.DisplayFor(modelItem => item.Price)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ImagePath)
+            @if (!string.IsNullOrEmpty(item.ImagePath))
+            {
+                <img src="@Url.Content(item.ImagePath)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Stock)
@@ -73,7 +76,7 @@
         <td>
             @Html.ActionLink("Editar", "Edit", new { id=item.ProductId }, new { @class = "btn btn-warning" })
             @Html.ActionLink("Detalles", "Details", new { id=item.ProductId }, new { @class = "btn btn-info" })
-            @Html.ActionLink("Borrar", "Delete", new { id=item.ProductId }, new { @class = "btn btn-danger" })
+            @Html.ActionLink("Borrar", "Delete", new { id=item.ProductId }, new { @class = "btn btn-danger", onclick = "return confirm('¿Está seguro de borrar este registro?')" })
         </td>
     </tr>
 }
