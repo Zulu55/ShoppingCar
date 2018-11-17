@@ -26,6 +26,8 @@
                     <li>@Html.ActionLink("Contactenos", "Contact", "Home")</li>
                     @if (Request.IsAuthenticated && User.IsInRole("Admin"))
                     {
+                        <li>@Html.ActionLink("Paises/Ciudades", "Index", "Countries")</li>
+                        <li>@Html.ActionLink("Clientes", "Index", "Customers")</li>
                         <li>@Html.ActionLink("Productos", "Index", "Products")</li>
                     }
                 </ul>

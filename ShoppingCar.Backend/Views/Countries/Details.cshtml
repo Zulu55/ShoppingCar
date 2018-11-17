@@ -1,0 +1,58 @@
+﻿@model ShoppingCar.Domain.Models.Country
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>País</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar País", "Edit", new { id = Model.CountryId }, new { @class = "btn btn-warning" })
+    @Html.ActionLink("Adicionar Ciudad", "AddCity", new { id = Model.CountryId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Regresar", "Index", new { }, new { @class = "btn btn-success" })
+</p>
+
+<h4>Ciudades</h4>
+@if (Model.Cities.Count == 0)
+{
+    <h5>No se han agregado ciudades aun.</h5>
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Cities.FirstOrDefault().Name)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Cities.OrderBy(c => c.Name))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar Ciudad", "EditCity", new { id = item.CityId }, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("Borrar Ciudad", "DeleteCity", new { id = item.CityId }, new { @class = "btn btn-danger", onclick = "return confirm('¿Está seguro de borrar esta ciudad?')" })
+                </td>
+            </tr>
+        }
+
+    </table>
+}

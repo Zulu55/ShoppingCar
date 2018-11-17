@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ShoppingCar.Domain.Models.Country>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Paises</h2>
+
+<p>
+    @Html.ActionLink("Nuevo", "Create", new { }, new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            # Ciudades
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Cities.Count)
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id = item.CountryId }, new { @class = "btn btn-warning" })
+            @Html.ActionLink("Detalles", "Details", new { id = item.CountryId }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Borrar", "Delete", new { id = item.CountryId }, new { @class = "btn btn-danger", onclick = "return confirm('¿Está seguro de borrar esta país y todas sus ciudades?')" })
+        </td>
+    </tr>
+    }
+
+</table>
