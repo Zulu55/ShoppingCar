@@ -1,6 +1,7 @@
 ﻿namespace ShoppingCar.Domain.Models
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Product
@@ -48,6 +49,10 @@
 
         [Display(Name = "Está disponible?")]
         public bool IsAvailable { get; set; }
+
+        public virtual ICollection<SaleDetail> SaleDetails { get; set; }
+
+        public virtual ICollection<SaleDetailTmp> SaleDetailTmps { get; set; }
         #endregion
     }
 }

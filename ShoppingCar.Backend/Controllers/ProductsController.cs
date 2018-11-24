@@ -8,18 +8,17 @@
     using Helpers;
     using Models;
 
-   [Authorize(Roles = "Admin")]
     public class ProductsController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
 
-        // GET: Products
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
             return View(await this.db.Products.ToListAsync());
         }
 
-        // GET: Products/Details/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,13 +36,12 @@
             return View(product);
         }
 
-        // GET: Products/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Products/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(ProductView view)
@@ -85,7 +83,7 @@
             };
         }
 
-        // GET: Products/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
@@ -120,7 +118,6 @@
             };
         }
 
-        // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(ProductView view)
@@ -145,7 +142,7 @@
             return View(view);
         }
 
-        // GET: Products/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)

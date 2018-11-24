@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ShoppingCar.Domain.Models.Product>
+
+@{
+    ViewBag.Title = "Productos";
+}
+
+<h2>Catálogo de Productos</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImagePath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Stock)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QuantityDiscount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PercentDiscount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsAvailable)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Price)
+        </td>
+        <td>
+            @if (!string.IsNullOrEmpty(item.ImagePath))
+            {
+                <img src="@Url.Content(item.ImagePath)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Stock)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QuantityDiscount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PercentDiscount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsAvailable)
+        </td>
+        <td>
+            @Html.ActionLink("Agregar al carro de compras", "AddToCar", new { id = item.ProductId }, new { @class = "btn btn-primary", onclick = "return confirm('¿Está seguro de agregar el producto a la compra?')" })
+        </td>
+    </tr>
+}
+
+</table>

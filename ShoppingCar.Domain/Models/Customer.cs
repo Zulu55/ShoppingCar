@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ShoppingCar.Domain.Models
+﻿namespace ShoppingCar.Domain.Models
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class Customer
     {
         [Key]
@@ -57,10 +53,15 @@ namespace ShoppingCar.Domain.Models
 
         [NotMapped]
         [Display(Name = "Confirmación Contraseña")]
+        [Required(ErrorMessage = "El campo {0} es requerido.")]
         [Compare("Password", ErrorMessage = "La contraseña y la confirmación no concuerdan.")]
         [DataType(DataType.Password)]
         public string Confirm { get; set; }
 
         public virtual City City { get; set; }
+
+        public virtual ICollection<Sale> Sales { get; set; }
+
+        public virtual ICollection<SaleDetailTmp> SaleDetailTmps { get; set; }
     }
 }

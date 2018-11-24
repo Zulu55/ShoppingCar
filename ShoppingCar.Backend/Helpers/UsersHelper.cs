@@ -63,7 +63,7 @@
             }
         }
 
-        public static void CreateUserASP(string email, string roleName)
+        public static bool CreateUserASP(string email, string roleName)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(userContext));
             var userASP = userManager.FindByEmail(email);
@@ -75,13 +75,18 @@
                     UserName = email,
                 };
 
-                userManager.Create(userASP, email);
+                var result = userManager.Create(userASP, email);
+                if (result.Succeeded)
+                {
+                    userManager.AddToRole(userASP.Id, roleName);
+                    return true;
+                }
             }
 
-            userManager.AddToRole(userASP.Id, roleName);
+            return false;
         }
 
-        public static void CreateUserASP(string email, string roleName, string password)
+        public static bool CreateUserASP(string email, string roleName, string password)
         {
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(userContext));
 
@@ -95,7 +100,10 @@
             if (result.Succeeded)
             {
                 userManager.AddToRole(userASP.Id, roleName);
+                return true;
             }
+
+            return false;
         }
 
         public void Dispose()

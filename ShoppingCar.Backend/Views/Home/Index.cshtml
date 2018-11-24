@@ -14,13 +14,15 @@
         <p>@Html.ActionLink("Registrarse como cliente", "Register", "Customers", new { @class = "btn btn-primary" })</p>
     </div>
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+        <h2>Catálogo de Productos</h2>
+        <p><img src="~/Content/Images/iconfinder_box_60733.png" /></p>
+        <p>Disfruta de nuestro catálogo de productos con la mejor calidad y precio.</p>
+        <p>@Html.ActionLink("Catálogo de Productos", "Index2", "Products", new { @class = "btn btn-warning" })</p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+        <h2>Ver carro de compras</h2>
+        <p><img src="~/Content/Images/iconfinder_Online-Shopping_379432.png" /></p>
+        <p>Revisar tu compra y confirmar tu pedido</p>
+        <p>@Html.ActionLink("Ver carro de compras", "ShowCar", "Products", new { @class = "btn btn-success" })</p>
     </div>
 </div>

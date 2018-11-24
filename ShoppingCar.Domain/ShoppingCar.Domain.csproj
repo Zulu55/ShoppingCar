@@ -53,6 +53,9 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\DataContext.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\Sale.cs" />
+    <Compile Include="Models\SaleDetail.cs" />
+    <Compile Include="Models\SaleDetailTmp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
