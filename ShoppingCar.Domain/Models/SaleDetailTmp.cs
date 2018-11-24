@@ -16,6 +16,7 @@ namespace ShoppingCar.Domain.Models
         public int CustomerId { get; set; }
 
         [Display(Name = "ID Producto")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un producto.")]
         public int ProductId { get; set; }
 
         [Display(Name = "Producto")]
@@ -26,6 +27,8 @@ namespace ShoppingCar.Domain.Models
         public decimal Price { get; set; }
 
         [Display(Name = "Cantidad")]
+        [Required(ErrorMessage = "el campo {0} es obligatorio")]
+        [Range(1, int.MaxValue, ErrorMessage = "Debe ingresar un valor mayor a cero.")]
         [DisplayFormat(DataFormatString = "{0:N2}")]
         public double Quantity { get; set; }
 

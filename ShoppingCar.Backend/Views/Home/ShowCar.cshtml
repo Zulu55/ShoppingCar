@@ -58,7 +58,7 @@
         </td>
         <td>
             @Html.ActionLink("Editar", "Edit", new { id = item.SaleDetailTmpId }, new { @class = "btn btn-warning" })
-            @Html.ActionLink("Delete", "Delete", new { id = item.SaleDetailTmpId }, new { @class = "btn btn-danger" })
+            @Html.ActionLink("Eliminar", "Delete", new { id = item.SaleDetailTmpId }, new { @class = "btn btn-danger", onclick = "return confirm('¿Está seguro de eliminar este prodcuto?')" })
         </td>
     </tr>
 }

@@ -13,6 +13,8 @@
 
         public DateTime DateSale { get; set; }
 
+        [Display(Name = "Comentarios")]
+        [DataType(DataType.MultilineText)]
         public string Remarks { get; set; }
 
         public bool IsDeliveried { get; set; }

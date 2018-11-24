@@ -280,6 +280,9 @@
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\Index2.cshtml" />
     <Content Include="Views\Home\ShowCar.cshtml" />
+    <Content Include="Views\Home\AddNewToCar.cshtml" />
+    <Content Include="Views\Home\Edit.cshtml" />
+    <Content Include="Views\Home\Confirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

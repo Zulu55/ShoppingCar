@@ -1,5 +1,7 @@
 ﻿namespace ShoppingCar.Backend.Controllers
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Data.Entity;
     using System.Linq;
@@ -14,6 +16,158 @@
     {
         private LocalDataContext db = new LocalDataContext();
 
+        [Authorize(Roles = "Customer")]
+        public ActionResult Confirm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Confirm(Sale sale)
+        {
+            if (ModelState.IsValid)
+            {
+                // Aca va el manejo de transacciones
+            }
+
+            return View(sale);
+        }
+
+        public async Task<ActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var saleDetailTmp = await this.db.SaleDetailTmps.FindAsync(id);
+
+            if (saleDetailTmp == null)
+            {
+                return HttpNotFound();
+            }
+
+            db.SaleDetailTmps.Remove(saleDetailTmp);
+            await db.SaveChangesAsync();
+            return RedirectToAction("ShowCar");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(SaleDetailTmp saleDetailTmp)
+        {
+            if (ModelState.IsValid)
+            {
+                var product = await db.Products.FindAsync(saleDetailTmp.ProductId);
+                if (product == null)
+                {
+                    return HttpNotFound();
+                }
+
+                if (saleDetailTmp.Quantity >= product.QuantityDiscount)
+                {
+                    saleDetailTmp.PercentDiscount = product.PercentDiscount;
+                }
+                else
+                {
+                    saleDetailTmp.PercentDiscount = 0;
+                }
+
+                db.Entry(saleDetailTmp).State = EntityState.Modified;
+                await db.SaveChangesAsync();
+                return RedirectToAction("ShowCar");
+            }
+
+            return View(saleDetailTmp);
+        }
+
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var saleDetailTmp = await this.db.SaleDetailTmps.FindAsync(id);
+
+            if (saleDetailTmp == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(saleDetailTmp);
+        }
+
+        [Authorize(Roles = "Customer")]
+        public async Task<ActionResult> AddNewToCar()
+        {
+            ViewBag.ProductId = new SelectList(await this.GetProducts(), "ProductId", "Name");
+            var view = new SaleDetailTmp { Quantity = 1 };
+            return View(view);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddNewToCar(SaleDetailTmp saleDetailTmp)
+        {
+            if (ModelState.IsValid)
+            {
+                var customer = await db.Customers.
+                    Where(c => c.Email.ToLower().Equals(User.Identity.Name.ToLower())).
+                    FirstOrDefaultAsync();
+
+                if (customer == null)
+                {
+                    return HttpNotFound();
+                }
+
+                var saleDetailTmpOld = await db.SaleDetailTmps.
+                    Where(sdt => sdt.CustomerId == customer.CustomerId && 
+                                 sdt.ProductId == saleDetailTmp.ProductId).
+                    FirstOrDefaultAsync();
+                var product = await db.Products.FindAsync(saleDetailTmp.ProductId);
+
+                if (saleDetailTmpOld == null)
+                {
+                    saleDetailTmp.CustomerId = customer.CustomerId;
+                    saleDetailTmp.Name = product.Name;
+                    saleDetailTmp.Price = product.Price;
+                    if (saleDetailTmp.Quantity >= product.QuantityDiscount)
+                    {
+                        saleDetailTmp.PercentDiscount = product.PercentDiscount;
+                    }
+
+                    db.SaleDetailTmps.Add(saleDetailTmp);
+                }
+                else
+                {
+                    saleDetailTmpOld.Quantity += saleDetailTmp.Quantity;
+                    if (saleDetailTmpOld.Quantity >= product.QuantityDiscount)
+                    {
+                        saleDetailTmpOld.PercentDiscount = product.PercentDiscount;
+                    }
+
+                    db.Entry(saleDetailTmpOld).State = EntityState.Modified;
+                }
+
+                await db.SaveChangesAsync();
+                return RedirectToAction("ShowCar");
+            }
+
+            ViewBag.ProductId = new SelectList(await this.GetProducts(), "ProductId", "Name");
+            return View(saleDetailTmp);
+        }
+
+        private async Task<List<Product>> GetProducts()
+        {
+            var products = await db.Products.OrderBy(p => p.Name).ToListAsync();
+            products.Insert(0, new Product
+            {
+                ProductId = 0,
+                Name = "[Seleccione un producto...]",
+            });
+
+            return products;
+        }
 
         [Authorize(Roles = "Customer")]
         public async Task<ActionResult> ShowCar()
