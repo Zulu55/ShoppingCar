@@ -63,5 +63,8 @@
         public virtual ICollection<Sale> Sales { get; set; }
 
         public virtual ICollection<SaleDetailTmp> SaleDetailTmps { get; set; }
+
+        [Display(Name = "Cliente")]
+        public string FullName { get { return $"{this.FirstNames} {this.LastNames}"; }  }
     }
 }

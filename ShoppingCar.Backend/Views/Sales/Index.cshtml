@@ -1,0 +1,64 @@
+﻿@model IEnumerable<ShoppingCar.Domain.Models.Sale>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Ventas</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Customer.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateSale)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsDeliveried)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateDeliveried)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalQuantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TotalValue)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Customer.FullName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateSale)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remarks)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsDeliveried)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateDeliveried)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalQuantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TotalValue)
+        </td>
+        <td>
+            @Html.ActionLink("Detalles", "Details", new { id = item.SaleId }, new { @class = "btn btn-info" })
+        </td>
+    </tr>
+}
+
+</table>

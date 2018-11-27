@@ -23,11 +23,66 @@
         }
 
         [HttpPost]
-        public ActionResult Confirm(Sale sale)
+        public async Task<ActionResult> Confirm(Sale sale)
         {
             if (ModelState.IsValid)
             {
-                // Aca va el manejo de transacciones
+                var customer = await db.Customers.Where(c => c.Email.ToLower().Equals(User.Identity.Name.ToLower())).FirstOrDefaultAsync();
+                if (customer == null)
+                {
+                    return HttpNotFound();
+                }
+
+                var saleDetailTmps = await db.SaleDetailTmps.Where(s => s.CustomerId == customer.CustomerId).ToListAsync();
+                if (saleDetailTmps.Count != 0)
+                {
+                    using (var transaction = db.Database.BeginTransaction())
+                    {
+                        try
+                        {
+                            sale.CustomerId = customer.CustomerId;
+                            sale.DateSale = DateTime.Now;
+                            db.Sales.Add(sale);
+                            await db.SaveChangesAsync();
+
+                            foreach (var saleDetailTmp in saleDetailTmps)
+                            {
+                                var saleDetail = new SaleDetail
+                                {
+                                     Name = saleDetailTmp.Name,
+                                     PercentDiscount = saleDetailTmp.PercentDiscount,
+                                     Price = saleDetailTmp.Price,
+                                     ProductId = saleDetailTmp.ProductId,
+                                     Quantity = saleDetailTmp.Quantity,
+                                     SaleId = sale.SaleId,
+                                };
+
+                                db.SaleDetails.Add(saleDetail);
+
+                                var product = await db.Products.FindAsync(saleDetailTmp.ProductId);
+                                if (product != null)
+                                {
+                                    product.Stock -= saleDetailTmp.Quantity;
+                                }
+
+                                db.Entry(product).State = EntityState.Modified;
+                            }
+
+                            db.SaleDetailTmps.RemoveRange(saleDetailTmps);
+                            await db.SaveChangesAsync();
+                            transaction.Commit();
+                            return RedirectToAction("ShowCar");
+                        }
+                        catch (Exception ex)
+                        {
+                            transaction.Rollback();
+                            ModelState.AddModelError(string.Empty, $"Error: {ex.Message}");
+                            return View(sale);
+                        }
+                    }
+                }
+
+                ModelState.AddModelError(string.Empty, "Debes de agregar algunos artículos antes de confirmar la compra.");
             }
 
             return View(sale);

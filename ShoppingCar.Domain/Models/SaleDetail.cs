@@ -22,5 +22,16 @@
         public virtual Sale Sale { get; set; }
 
         public virtual Product Product { get; set; }
+
+        [Display(Name = "Valor")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public decimal Value
+        {
+            get
+            {
+                return this.Price * (decimal)this.Quantity * (1 - (decimal)this.PercentDiscount);
+            }
+        }
+
     }
 }

@@ -1,0 +1,126 @@
+﻿@model ShoppingCar.Domain.Models.Sale
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Venta</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Customer.FirstNames)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Customer.FirstNames)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateSale)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateSale)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDeliveried)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDeliveried)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateDeliveried)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateDeliveried)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalQuantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalQuantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalValue)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Despachar", "Deliver", new { id = Model.SaleId }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Regresar", "Index", new { }, new { @class = "btn btn-success" })
+</p>
+
+<h4>Detalles</h4>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SaleDetails.FirstOrDefault().Product.ImagePath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaleDetails.FirstOrDefault().Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaleDetails.FirstOrDefault().Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaleDetails.FirstOrDefault().Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaleDetails.FirstOrDefault().PercentDiscount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SaleDetails.FirstOrDefault().Value)
+        </th>
+    </tr>
+
+    @foreach (var item in Model.SaleDetails)
+    {
+        <tr>
+            <td>
+                @if (!string.IsNullOrEmpty(item.Product.ImagePath))
+                {
+                    <img src="@Url.Content(item.Product.ImagePath)" alt="Image" style="width:100px;height:150px;max-width: 100%; height: auto;" />
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PercentDiscount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Value)
+            </td>
+        </tr>
+    }
+</table>
