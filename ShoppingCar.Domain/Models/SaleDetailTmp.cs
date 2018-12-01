@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -46,8 +47,10 @@ namespace ShoppingCar.Domain.Models
             }
         }
 
+        [JsonIgnore]
         public virtual Customer Customer { get; set; }
 
+        [JsonIgnore]
         public virtual Product Product { get; set; }
     }
 }

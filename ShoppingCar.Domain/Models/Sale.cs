@@ -1,5 +1,6 @@
 ﻿namespace ShoppingCar.Domain.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -25,16 +26,30 @@
         [Display(Name = "Fecha Despacho")]
         public DateTime? DateDeliveried { get; set; }
 
+        [JsonIgnore]
         public virtual Customer Customer { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<SaleDetail> SaleDetails { get; set; }
 
         [Display(Name = "Artículos")]
         [DisplayFormat(DataFormatString = "{0:N2}")]
-        public double TotalQuantity { get { return this.SaleDetails.Sum(s => s.Quantity); } }
+        public double TotalQuantity
+        {
+            get
+            {
+                return this.SaleDetails == null? 0 : this.SaleDetails.Sum(s => s.Quantity);
+            }
+        }
 
         [Display(Name = "Valor")]
         [DisplayFormat(DataFormatString = "{0:C2}")]
-        public decimal TotalValue { get { return this.SaleDetails.Sum(s => s.Value); } }
+        public decimal TotalValue
+        {
+            get
+            {
+                return this.SaleDetails == null ? 0 : this.SaleDetails.Sum(s => s.Value);
+            }
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace ShoppingCar.Backend.Controllers
 {
     using System.Data.Entity;
+    using System.Linq;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web.Mvc;
@@ -15,7 +16,7 @@
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index()
         {
-            return View(await this.db.Products.ToListAsync());
+            return View(await this.db.Products.OrderBy(p => p.Name).ToListAsync());
         }
 
         [Authorize(Roles = "Admin")]
@@ -75,7 +76,7 @@
                 IsAvailable = view.IsAvailable,
                 LastPurchase = view.LastPurchase,
                 Name = view.Name,
-                PercentDiscount = view.PercentDiscount,
+                PercentDiscountInt = view.PercentDiscountInt,
                 Price = view.Price,
                 ProductId = view.ProductId,
                 QuantityDiscount = view.QuantityDiscount,
@@ -110,11 +111,12 @@
                 IsAvailable = product.IsAvailable,
                 LastPurchase = product.LastPurchase,
                 Name = product.Name,
-                PercentDiscount = product.PercentDiscount,
+                PercentDiscountInt = product.PercentDiscountInt,
                 Price = product.Price,
                 ProductId = product.ProductId,
                 QuantityDiscount = product.QuantityDiscount,
                 Stock = product.Stock,
+                ImagePath = product.ImagePath,
             };
         }
 

@@ -303,9 +303,23 @@
             return RedirectToAction("Index2");
         }
 
-        public async Task<ActionResult> Index2()
+        public async Task<ActionResult> Index2(ProductFilterView view)
         {
-            return View(await this.db.Products.ToListAsync());
+            if (string.IsNullOrEmpty(view.Filter))
+            {
+                view.Products = await this.db.Products
+                    .OrderBy(p => p.Name)
+                    .ToListAsync();
+            }
+            else
+            {
+                view.Products = await this.db.Products
+                    .Where(p => p.Name.ToLower().Contains(view.Filter.ToLower()))
+                    .OrderBy(p => p.Name)
+                    .ToListAsync();
+            }
+
+            return View(view);
         }
 
         public ActionResult Index()

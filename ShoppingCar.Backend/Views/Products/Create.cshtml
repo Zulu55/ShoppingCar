@@ -51,7 +51,7 @@
                     <div class="input-group-btn" style="height:auto">
                         <div tabindex="500" class="btn btn-primary btn-file">
                             <i class="glyphicon glyphicon-folder-open"></i>
-                            Selecionar archivo...
+                            Selecionar...
                             @Html.TextBoxFor(modelo => modelo.ImageFile, new { type = "file", id = "files" })
                         </div>
                     </div>
@@ -77,15 +77,15 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PercentDiscount, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.PercentDiscountInt, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => model.PercentDiscount, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.PercentDiscount, "", new { @class = "text-danger" })
+            @Html.EditorFor(model => model.PercentDiscountInt, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.PercentDiscountInt, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.LastPurchase, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.LastPurchase, htmlAttributes: new { @class = "control-label col-md-2", id="LastPurchase" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.LastPurchase, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.LastPurchase, "", new { @class = "text-danger" })
@@ -113,4 +113,9 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).on('ready', function () {
+            $("#LastPurchase").datepicker();
+        });
+    </script>
 }

@@ -1,5 +1,6 @@
 ﻿namespace ShoppingCar.Domain.Models
 {
+    using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -37,22 +38,34 @@
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = false)]
         public double QuantityDiscount { get; set; }
 
-        [Display(Name = "Descuento por cantidad")]
+        [Display(Name = "% Descuento por cantidad")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         [DisplayFormat(DataFormatString = "{0:P2}", ApplyFormatInEditMode = false)]
-        public double PercentDiscount { get; set; }
+        [Range(0,100, ErrorMessage = "En el campo {0}, debes ingresar valores entre 0 y 100.")]
+        public int PercentDiscountInt { get; set; }
 
         [Display(Name = "Última compra")]
-        [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
         public DateTime LastPurchase { get; set; }
 
         [Display(Name = "Está disponible?")]
         public bool IsAvailable { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<SaleDetail> SaleDetails { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<SaleDetailTmp> SaleDetailTmps { get; set; }
+
+        [Display(Name = "% Descuento por cantidad")]
+        [DisplayFormat(DataFormatString = "{0:P2}", ApplyFormatInEditMode = false)]
+        public double PercentDiscount
+        {
+            get
+            {
+                return (double)this.PercentDiscountInt / 100;
+            }
+        }
         #endregion
     }
 }

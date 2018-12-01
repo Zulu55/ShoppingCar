@@ -1,5 +1,6 @@
 ﻿namespace ShoppingCar.Domain.Models
 {
+    using Newtonsoft.Json;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -58,10 +59,13 @@
         [DataType(DataType.Password)]
         public string Confirm { get; set; }
 
+        [JsonIgnore]
         public virtual City City { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Sale> Sales { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<SaleDetailTmp> SaleDetailTmps { get; set; }
 
         [Display(Name = "Cliente")]

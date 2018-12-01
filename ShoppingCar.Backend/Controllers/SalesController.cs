@@ -1,30 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using ShoppingCar.Backend.Models;
-using ShoppingCar.Domain.Models;
-
-namespace ShoppingCar.Backend.Controllers
+﻿namespace ShoppingCar.Backend.Controllers
 {
+    using System;
+    using System.Data;
+    using System.Data.Entity;
+    using System.Linq;
+    using System.Net;
+    using System.Threading.Tasks;
+    using System.Web.Mvc;
+    using Domain.Models;
+    using Models;
+    using PagedList;
+
     [Authorize(Roles = "Admin")]
     public class SalesController : Controller
     {
         private LocalDataContext db = new LocalDataContext();
 
-        // GET: Sales
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Deliver(int? id)
         {
-            var sales = db.Sales.Include(s => s.Customer);
-            return View(await sales.ToListAsync());
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var sale = await db.Sales.FindAsync(id);
+
+            if (sale == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (sale.IsDeliveried)
+            {
+                ViewBag.ErrorMessage = "Esta venta ya fue despachada";
+                return RedirectToAction($"Error/{id}");
+            }
+
+            sale.IsDeliveried = true;
+            sale.DateDeliveried = DateTime.UtcNow;
+            db.Entry(sale).State = EntityState.Modified;
+            await db.SaveChangesAsync();
+
+            return RedirectToAction($"Details/{id}");
         }
 
-        // GET: Sales/Details/5
+        public ActionResult Error(int id)
+        {
+            return View(id);
+        }
+
+        public ActionResult Index(int? page = null)
+        {
+            page = (page ?? 1);
+            var sales = db.Sales.Include(s => s.Customer);
+            return View(sales.OrderBy(s => s.IsDeliveried)
+                .ThenByDescending(s => s.DateSale)
+                .ToPagedList((int)page, 10));
+        }
+
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)

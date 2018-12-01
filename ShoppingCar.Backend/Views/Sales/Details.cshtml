@@ -6,6 +6,8 @@
 
 <h2>Detalles</h2>
 
+<h3>@ViewBag.ErrorMessage</h3>
+
 <div>
     <h4>Venta</h4>
     <hr />
@@ -69,7 +71,10 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Despachar", "Deliver", new { id = Model.SaleId }, new { @class = "btn btn-primary" })
+    @if (!Model.IsDeliveried)
+    {
+        @Html.ActionLink("Despachar", "Deliver", new { id = Model.SaleId }, new { @class = "btn btn-primary", onclick = "return confirm('¿Está seguro de despachar este pedido?')" })
+    }
     @Html.ActionLink("Regresar", "Index", new { }, new { @class = "btn btn-success" })
 </p>
 
